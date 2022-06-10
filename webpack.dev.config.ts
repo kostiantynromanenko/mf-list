@@ -1,12 +1,9 @@
 import { Configuration as WebpackConfiguration, container as WebpackContainer } from 'webpack';
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { merge } from 'webpack-merge';
 
 import { dependencies } from './package.json';
-
 import commonConfig from './webpack.common.config';
-
-import { merge } from 'webpack-merge';
 
 interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevServerConfiguration;
@@ -15,9 +12,6 @@ interface Configuration extends WebpackConfiguration {
 const config: Configuration = merge(commonConfig, {
   mode: 'development',
   plugins: [
-    new HtmlWebpackPlugin({
-      template: 'public/index.html'
-    }),
     new WebpackContainer.ModuleFederationPlugin({
       name: 'list',
       filename: 'remoteEntry.js',
