@@ -2,7 +2,7 @@ import { Configuration as WebpackConfiguration, container as WebpackContainer } 
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
 import { merge } from 'webpack-merge';
 
-import { dependencies } from './package.json';
+import { dependencies } from '../package.json';
 import commonConfig from './webpack.common.config';
 
 interface Configuration extends WebpackConfiguration {
@@ -18,7 +18,17 @@ const config: Configuration = merge(commonConfig, {
       exposes: {
         './ListApp': './src/bootstrap'
       },
-      shared: dependencies
+      shared: {
+        ...dependencies,
+        react: {
+          singleton: true,
+          requiredVersion: dependencies['react']
+        },
+        'react-dom': {
+          singleton: true,
+          requiredVersion: dependencies['react-dom']
+        }
+      }
     })
   ],
   devServer: {
